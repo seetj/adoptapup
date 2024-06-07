@@ -4,8 +4,9 @@
   "description": "",
   "scripts": {
     "dev": "next",
-    "build": "next build",
-    "start": "next start"
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "postinstall": "prisma generate"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +24,6 @@
     "@types/node": "17.0.14",
     "@types/react": "17.0.38",
     "prisma": "^5.14.0",
-    "typescript": "5.2.2"
+    "typescript": "5.3.3"
   }
 }
