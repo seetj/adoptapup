@@ -1,23 +1,25 @@
 import React from 'react';
 import { GetServerSideProps } from 'next';
 import { useSession, getSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from './api/auth/[...nextauth]'
 import Layout from '../components/Layout';
 import Post, { PostProps } from '../components/Post';
 import prisma from '../lib/prisma';
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  const session = await getSession({ req });
+  const session = await getServerSession(req,res,authOptions);
   if (!session) {
     res.statusCode = 403;
     return { props: { drafts: [] } };
   }
-  
+
   const drafts = await prisma.post.findMany({
     where: {
       author: { email: session.user.email },
       published: false,
     },
-    include: {
+    include: {  
       author: {
         select: { name: true },
       },
